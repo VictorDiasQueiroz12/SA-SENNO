@@ -1,0 +1,173 @@
+// Schema do banco de dados - Little Ville
+// Aprovado na Etapa 2 do desenvolvimento (modelagem)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ---------- ENUMS ----------
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum DangerLevel {
+  LOW // Baixo
+  MODERATE // Moderado
+  HIGH // Alto
+  CRITICAL // Critico
+}
+
+enum SightingStatus {
+  PENDING
+  IN_REVIEW
+  VERIFIED
+  REJECTED
+}
+
+enum ReportStatus {
+  PENDING
+  IN_REVIEW
+  RESOLVED
+  DISMISSED
+}
+
+enum NotificationType {
+  NEW_COMMENT
+  NEW_LIKE
+  RELEVANT_SIGHTING
+  ADMIN_EVENT
+}
+
+// ---------- MODELS ----------
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(USER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  sightings       Sighting[]
+  comments        Comment[]
+  likes           Like[]
+  reportsFiled    Report[]       @relation("ReportedBy")
+  reportsReviewed Report[]       @relation("ReviewedBy")
+  notifications   Notification[]
+  customCreatures Creature[]
+
+  @@index([email])
+}
+
+model Creature {
+  id              String   @id @default(cuid())
+  name            String   @unique
+  isCustom        Boolean  @default(false)
+  createdByUserId String?
+  createdBy       User?    @relation(fields: [createdByUserId], references: [id], onDelete: SetNull)
+  createdAt       DateTime @default(now())
+
+  sightings Sighting[]
+
+  @@index([isCustom])
+}
+
+model Sighting {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+  creatureId String
+  creature   Creature @relation(fields: [creatureId], references: [id], onDelete: Restrict)
+
+  location    String
+  latitude    Float
+  longitude   Float
+  occurredAt  DateTime
+  description String         @db.Text
+  photoUrl    String?
+  dangerLevel DangerLevel
+  status      SightingStatus @default(PENDING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  comments Comment[]
+  likes    Like[]
+  reports  Report[]
+
+  @@index([creatureId])
+  @@index([status])
+  @@index([dangerLevel])
+  @@index([userId])
+  @@index([createdAt])
+  @@index([latitude, longitude])
+}
+
+model Comment {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+  sightingId String
+  sighting   Sighting @relation(fields: [sightingId], references: [id], onDelete: Cascade)
+
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([sightingId])
+}
+
+model Like {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Restrict)
+  sightingId String
+  sighting   Sighting @relation(fields: [sightingId], references: [id], onDelete: Cascade)
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, sightingId])
+  @@index([sightingId])
+}
+
+model Report {
+  id         String   @id @default(cuid())
+  sightingId String
+  sighting   Sighting @relation(fields: [sightingId], references: [id], onDelete: Cascade)
+  userId     String
+  user       User     @relation("ReportedBy", fields: [userId], references: [id], onDelete: Restrict)
+
+  reason String       @db.Text
+  status ReportStatus @default(PENDING)
+
+  reviewedByUserId String?
+  reviewedBy       User?     @relation("ReviewedBy", fields: [reviewedByUserId], references: [id], onDelete: SetNull)
+  reviewedAt       DateTime?
+
+  createdAt DateTime @default(now())
+
+  // Confirmado na Etapa 2: um usuario nao pode denunciar o mesmo avistamento mais de uma vez
+  @@unique([userId, sightingId])
+  @@index([status])
+  @@index([sightingId])
+}
+
+model Notification {
+  id          String           @id @default(cuid())
+  userId      String
+  user        User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type        NotificationType
+  message     String
+  referenceId String?
+  read        Boolean          @default(false)
+  createdAt   DateTime         @default(now())
+
+  @@index([userId, read])
+}

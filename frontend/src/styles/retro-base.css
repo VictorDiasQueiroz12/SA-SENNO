@@ -1,0 +1,249 @@
+/* Base visual retro (Windows 95) - bordas 3D, botoes, janelas, inputs.
+   Estas classes sao usadas por toda a aplicacao para manter consistencia. */
+
+* { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: "Tahoma", "Segoe UI", Verdana, Geneva, sans-serif;
+  font-size: 13px;
+  color: var(--lv-text);
+  background-color: var(--lv-bg-desktop);
+  background-image:
+    linear-gradient(45deg, rgba(255,255,255,0.03) 25%, transparent 25%),
+    linear-gradient(-45deg, rgba(255,255,255,0.03) 25%, transparent 25%);
+  background-size: 4px 4px;
+}
+
+a { color: var(--lv-link); }
+
+/* Borda "entalhada" classica: clara em cima/esquerda, escura embaixo/direita */
+.lv-bevel-out {
+  border-top: 2px solid var(--lv-border-light);
+  border-left: 2px solid var(--lv-border-light);
+  border-bottom: 2px solid var(--lv-border-darker);
+  border-right: 2px solid var(--lv-border-darker);
+}
+
+.lv-bevel-in {
+  border-top: 2px solid var(--lv-border-dark);
+  border-left: 2px solid var(--lv-border-dark);
+  border-bottom: 2px solid var(--lv-border-light);
+  border-right: 2px solid var(--lv-border-light);
+}
+
+.lv-window {
+  background: var(--lv-bg-window);
+  border-top: 2px solid var(--lv-border-light);
+  border-left: 2px solid var(--lv-border-light);
+  border-bottom: 2px solid var(--lv-border-darker);
+  border-right: 2px solid var(--lv-border-darker);
+  box-shadow: 1px 1px 0 var(--lv-border-dark);
+}
+
+.lv-titlebar {
+  background: linear-gradient(90deg, var(--lv-titlebar-start), var(--lv-titlebar-end));
+  color: var(--lv-titlebar-text);
+  padding: 4px 8px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.lv-titlebar-title {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lv-window-body {
+  padding: 12px;
+}
+
+/* Botoes */
+.lv-btn {
+  font-family: inherit;
+  font-size: 13px;
+  background: var(--lv-bg-panel);
+  color: var(--lv-text);
+  border-top: 2px solid var(--lv-border-light);
+  border-left: 2px solid var(--lv-border-light);
+  border-bottom: 2px solid var(--lv-border-darker);
+  border-right: 2px solid var(--lv-border-darker);
+  padding: 6px 14px;
+  cursor: pointer;
+}
+
+.lv-btn:active {
+  border-top: 2px solid var(--lv-border-darker);
+  border-left: 2px solid var(--lv-border-darker);
+  border-bottom: 2px solid var(--lv-border-light);
+  border-right: 2px solid var(--lv-border-light);
+}
+
+.lv-btn:disabled {
+  color: var(--lv-text-muted);
+  cursor: not-allowed;
+}
+
+.lv-btn-primary {
+  background: var(--lv-accent);
+  color: var(--lv-accent-text);
+}
+
+.lv-btn-danger {
+  background: var(--lv-danger-critical);
+  color: #fff;
+}
+
+/* Campos de formulario */
+.lv-field {
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lv-label {
+  font-weight: bold;
+}
+
+.lv-input, .lv-select, .lv-textarea {
+  font-family: inherit;
+  font-size: 13px;
+  background: var(--lv-bg-input);
+  color: var(--lv-text);
+  border-top: 2px solid var(--lv-border-dark);
+  border-left: 2px solid var(--lv-border-dark);
+  border-bottom: 2px solid var(--lv-border-light);
+  border-right: 2px solid var(--lv-border-light);
+  padding: 6px 8px;
+}
+
+.lv-textarea { resize: vertical; min-height: 80px; }
+
+.lv-error-text {
+  color: var(--lv-danger-critical);
+  font-size: 12px;
+}
+
+/* Painel simples (card) */
+.lv-panel {
+  background: var(--lv-bg-panel);
+  border-top: 2px solid var(--lv-border-light);
+  border-left: 2px solid var(--lv-border-light);
+  border-bottom: 2px solid var(--lv-border-darker);
+  border-right: 2px solid var(--lv-border-darker);
+  padding: 12px;
+}
+
+/* Layout geral da aplicacao */
+.lv-app-shell {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.lv-navbar {
+  background: linear-gradient(90deg, var(--lv-titlebar-start), var(--lv-titlebar-end));
+  color: var(--lv-titlebar-text);
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  border-bottom: 2px solid var(--lv-border-darker);
+}
+
+.lv-navbar-brand {
+  font-weight: bold;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--lv-titlebar-text);
+  text-decoration: none;
+}
+
+.lv-navbar-links {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.lv-navbar-links a, .lv-navbar-links button {
+  font-size: 12px;
+}
+
+.lv-main {
+  flex: 1;
+  padding: 16px;
+  max-width: 1100px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.lv-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: bold;
+  border: 1px solid var(--lv-border-darker);
+}
+
+.lv-badge-LOW { background: var(--lv-danger-low); color: #fff; }
+.lv-badge-MODERATE { background: var(--lv-danger-moderate); color: #fff; }
+.lv-badge-HIGH { background: var(--lv-danger-high); color: #fff; }
+.lv-badge-CRITICAL { background: var(--lv-danger-critical); color: #fff; }
+
+.lv-status-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 11px;
+  border: 1px solid var(--lv-border-dark);
+  background: var(--lv-bg-input);
+}
+
+.lv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.lv-empty-state, .lv-loading-state, .lv-error-state {
+  padding: 24px;
+  text-align: center;
+  color: var(--lv-text-muted);
+}
+
+.lv-error-state { color: var(--lv-danger-critical); }
+
+.lv-flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.lv-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+/* Responsividade basica */
+@media (max-width: 640px) {
+  .lv-navbar { flex-direction: column; align-items: flex-start; }
+  .lv-main { padding: 10px; }
+  .lv-grid { grid-template-columns: 1fr; }
+}

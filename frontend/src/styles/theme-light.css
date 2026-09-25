@@ -1,0 +1,22 @@
+/* Tema claro - paleta inspirada no Windows 95 classico (cinza, azul) */
+:root {
+  --lv-bg-desktop: #008080;
+  --lv-bg-window: #c0c0c0;
+  --lv-bg-panel: #d4d0c8;
+  --lv-bg-input: #ffffff;
+  --lv-text: #000000;
+  --lv-text-muted: #454545;
+  --lv-titlebar-start: #000080;
+  --lv-titlebar-end: #1084d0;
+  --lv-titlebar-text: #ffffff;
+  --lv-border-light: #ffffff;
+  --lv-border-dark: #808080;
+  --lv-border-darker: #000000;
+  --lv-accent: #000080;
+  --lv-accent-text: #ffffff;
+  --lv-danger-low: #2e7d32;
+  --lv-danger-moderate: #b8860b;
+  --lv-danger-high: #d2691e;
+  --lv-danger-critical: #c62828;
+  --lv-link: #000080;
+}

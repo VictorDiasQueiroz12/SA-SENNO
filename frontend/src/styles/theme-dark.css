@@ -1,0 +1,22 @@
+/* Tema escuro - mesma estetica retro, paleta mais escura */
+[data-theme="dark"] {
+  --lv-bg-desktop: #003030;
+  --lv-bg-window: #3a3a3a;
+  --lv-bg-panel: #2e2e2e;
+  --lv-bg-input: #1f1f1f;
+  --lv-text: #e8e8e8;
+  --lv-text-muted: #b5b5b5;
+  --lv-titlebar-start: #000040;
+  --lv-titlebar-end: #0a4d80;
+  --lv-titlebar-text: #ffffff;
+  --lv-border-light: #6b6b6b;
+  --lv-border-dark: #1a1a1a;
+  --lv-border-darker: #000000;
+  --lv-accent: #3a6ea5;
+  --lv-accent-text: #ffffff;
+  --lv-danger-low: #66bb6a;
+  --lv-danger-moderate: #d4af37;
+  --lv-danger-high: #e08a3c;
+  --lv-danger-critical: #e57373;
+  --lv-link: #8ab4f8;
+}
